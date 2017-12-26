@@ -1,0 +1,9 @@
+.nyc_output
+coverage
+dist
+node_modules
+
+*.js
+*.map
+npm-debug.log
+package-lock.json

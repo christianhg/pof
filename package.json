@@ -1,0 +1,49 @@
+{
+  "name": "pof",
+  "description": "General-purpose functional programming utilities",
+  "version": "0.0.0",
+  "license": "MIT",
+  "repository": "christianhg/pof",
+  "author": {
+    "name": "Christian Hamburger Grøngaard",
+    "email": "christianhg@gmail.com",
+    "url": "https://brummefar.dk"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "compile-production": "npm run remove-dist && tsc -p ./tsconfig.production.json",
+    "compile-test": "npm run remove-dist && tsc -p ./tsconfig.test.json",
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "dist": "npm run lint-production && npm run prettier-production && npm run test && npm run compile-production",
+    "lint": "tslint --fix ./src/**/*.ts",
+    "lint-production": "tslint ./src/**/*.ts",
+    "prepare": "npm run dist",
+    "prepush": "npm run lint-production && npm run prettier-production && npm run test",
+    "prettier": "prettier --config ./.prettierrc --write ./src/**/*.ts",
+    "prettier-production": "prettier --config ./.prettierrc --list-different ./src/**/*.ts",
+    "remove-dist": "trash dist",
+    "report": "nyc report --reporter=html",
+    "test": "npm run compile-test && nyc ava"
+  },
+  "ava": {
+    "files": "dist/**/*.test.js"
+  },
+  "nyc": {
+    "all": true
+  },
+  "devDependencies": {
+    "ava": "^0.24.0",
+    "codecov": "^3.0.0",
+    "husky": "^0.14.3",
+    "nyc": "^11.4.1",
+    "prettier": "^1.9.2",
+    "trash-cli": "^1.4.0",
+    "tslint": "^5.8.0",
+    "tslint-config-prettier": "^1.6.0",
+    "typescript": "^2.6.2"
+  }
+}
