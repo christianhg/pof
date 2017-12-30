@@ -1,8 +1,5 @@
+import { compose } from '../core'
 import * as Maybe from './maybe'
-
-function compose<A, B, C>(g: (b: B) => C, f: (a: A) => B) {
-  return (a: A) => g(f(a))
-}
 
 function isAdmin(a: Person): a is Admin {
   return a.hasOwnProperty('password')
