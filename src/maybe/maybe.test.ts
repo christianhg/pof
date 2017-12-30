@@ -127,6 +127,24 @@ test('filter', () => {
       .filter(compose(isEven, length))
       .getOrElse('A person does not exist')
   ).toBe('A person does not exist')
+
+  expect(
+    Maybe.fromNullable(persons[2])
+      .filter(isAdmin)
+      .fold(unsafeProp('password'), () => 'A person is not an admin')
+  ).toBe('1234')
+
+  expect(
+    Maybe.fromNullable(persons[1])
+      .filter(isAdmin)
+      .fold(unsafeProp('password'), () => 'A person is not an admin')
+  ).toBe('A person is not an admin')
+
+  expect(
+    Maybe.fromNullable(persons[3])
+      .filter(isAdmin)
+      .fold(unsafeProp('password'), () => 'A person does not exist')
+  ).toBe('A person does not exist')
 })
 
 test('fold', () => {
@@ -156,26 +174,6 @@ test('fromNullable', () => {
   expect(Maybe.fromNullable('foo').isNothing()).toBeFalsy()
 })
 
-test('guard', () => {
-  expect(
-    Maybe.fromNullable(persons[2])
-      .guard(isAdmin)
-      .fold(unsafeProp('password'), () => 'A person is not an admin')
-  ).toBe('1234')
-
-  expect(
-    Maybe.fromNullable(persons[1])
-      .guard(isAdmin)
-      .fold(unsafeProp('password'), () => 'A person is not an admin')
-  ).toBe('A person is not an admin')
-
-  expect(
-    Maybe.fromNullable(persons[3])
-      .guard(isAdmin)
-      .fold(unsafeProp('password'), () => 'A person does not exist')
-  ).toBe('A person does not exist')
-})
-
 test('map', () => {
   expect(
     Maybe.fromNullable(persons[0])
@@ -201,14 +199,14 @@ test('of', () => {
 test('orElse', () => {
   expect(
     Maybe.fromNullable(persons[1])
-      .guard(isAdmin)
+      .filter(isAdmin)
       .orElse(Maybe.of({ name: 'Spontaneous Admin', password: 'password' }))
       .fold(unsafeProp('name'), () => 'Should not happen')
   ).toBe('Spontaneous Admin')
 
   expect(
     Maybe.fromNullable(persons[2])
-      .guard(isAdmin)
+      .filter(isAdmin)
       .orElse(Maybe.of({ name: 'Spontaneous Admin', password: 'password' }))
       .fold(unsafeProp('name'), () => 'Should not happen')
   ).toBe('Carl')

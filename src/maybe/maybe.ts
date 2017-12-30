@@ -1,9 +1,9 @@
 export interface Maybe<A> {
   chain<B>(f: (a: A) => Maybe<B>): Maybe<B>
+  filter<B extends A>(f: (a: A) => a is B): Maybe<B>
   filter(f: (a: A) => boolean): Maybe<A>
   fold<B>(f: (a: A) => B, g: () => B): B
   getOrElse(a: A): A
-  guard<B extends A>(f: (a: A) => a is B): Maybe<B>
   isJust(): boolean
   isNothing(): boolean
   map<B>(f: (a: A) => B): Maybe<B>
@@ -22,6 +22,7 @@ class Just<A> implements Maybe<A> {
     return f(this.value)
   }
 
+  filter<B extends A>(f: (a: A) => a is B): Maybe<B>
   filter(f: (a: A) => boolean): Maybe<A> {
     return f(this.value) ? of(this.value) : empty()
   }
@@ -32,10 +33,6 @@ class Just<A> implements Maybe<A> {
 
   getOrElse(a: A) {
     return this.value
-  }
-
-  guard<B extends A>(f: (a: A) => a is B): Maybe<B> {
-    return f(this.value) ? of(this.value) : empty()
   }
 
   isJust() {
@@ -64,8 +61,9 @@ class Nothing<A> implements Maybe<A> {
     return empty<B>()
   }
 
+  filter<B extends A>(f: (a: A) => a is B): Maybe<B>
   filter(f: (a: A) => boolean) {
-    return empty<A>()
+    return empty()
   }
 
   fold<B>(f: (a: A) => B, g: () => B) {
@@ -74,10 +72,6 @@ class Nothing<A> implements Maybe<A> {
 
   getOrElse(a: A) {
     return a
-  }
-
-  guard<B extends A>(f: (a: A) => a is B) {
-    return empty<B>()
   }
 
   isJust() {
