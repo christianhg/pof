@@ -1,5 +1,5 @@
 import { compose } from '../core'
-import * as Maybe from './maybe'
+import * as Maybe from './'
 
 function isAdmin(a: Person): a is Admin {
   return a.hasOwnProperty('password')
