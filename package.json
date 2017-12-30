@@ -25,15 +25,19 @@
     "prepush": "npm run lint-production && npm run prettier-production && npm run test",
     "prettier": "prettier --config ./.prettierrc --write ./src/**/*.ts",
     "prettier-production": "prettier --config ./.prettierrc --list-different ./src/**/*.ts",
+    "remove-coverage": "trash coverage",
     "remove-dist": "trash dist",
-    "report": "nyc report --reporter=html",
-    "test": "npm run compile-test && nyc ava"
+    "remove-nyc-output": "trash .nyc_output",
+    "report": "npm run remove-coverage && nyc report --reporter=html",
+    "test": "npm run remove-nyc-output && npm run compile-test && nyc ava"
   },
   "ava": {
     "files": "dist/**/*.test.js"
   },
   "nyc": {
-    "all": true
+    "all": true,
+    "include": "src",
+    "extension": ".ts"
   },
   "devDependencies": {
     "ava": "^0.24.0",
