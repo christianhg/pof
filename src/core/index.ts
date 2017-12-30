@@ -1,3 +1,4 @@
 import { compose } from './compose'
+import { identity } from './identity'
 
-export { compose }
+export { compose, identity }
