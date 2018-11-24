@@ -31,53 +31,53 @@ interface Person {
 const admin: Admin = {
   age: 42,
   name: 'Carl',
-  password: '1234'
+  password: '1234',
 }
 
 const persons: Person[] = [
   {
-    name: 'Alice'
+    name: 'Alice',
   },
   {
     age: 30,
-    name: 'Bob'
+    name: 'Bob',
   },
-  admin
+  admin,
 ]
 
 test('all', () => {
   expect(Maybe.all([Maybe.of('foo'), Maybe.of('bar')]).isJust()).toBeTruthy()
   expect(Maybe.all([Maybe.of(42), Maybe.of('fizzbuzz')]).isJust()).toBeTruthy()
   expect(
-    Maybe.all([Maybe.of(true), Maybe.fromNullable(undefined)]).isNothing()
+    Maybe.all([Maybe.of(true), Maybe.fromNullable(undefined)]).isNothing(),
   ).toBeTruthy()
   expect(Maybe.all([Maybe.of('foo'), Maybe.of('bar')]).unsafeGet()).toEqual([
     'foo',
-    'bar'
+    'bar',
   ])
   expect(Maybe.all([Maybe.of(42), Maybe.of('fizzbuzz')]).unsafeGet()).toEqual([
     42,
-    'fizzbuzz'
+    'fizzbuzz',
   ])
   expect(
     Maybe.all([
       Maybe.fromNullable(persons[0]),
       Maybe.fromNullable(persons[1]),
       Maybe.fromNullable(persons[2]),
-      Maybe.fromNullable(persons[3])
+      Maybe.fromNullable(persons[3]),
     ])
       .map(persons => persons.map(unsafeProp('name')))
-      .isNothing()
+      .isNothing(),
   ).toBeTruthy()
   expect(
     Maybe.all([
       Maybe.fromNullable(persons[0]),
       Maybe.fromNullable(persons[1]),
-      Maybe.fromNullable(persons[2])
+      Maybe.fromNullable(persons[2]),
     ]).fold(
       persons => persons.map(unsafeProp('name')),
-      () => ['random', 'names', 'list']
-    )
+      () => ['random', 'names', 'list'],
+    ),
   ).toEqual(['Alice', 'Bob', 'Carl'])
 })
 
@@ -85,19 +85,19 @@ test('chain', () => {
   expect(
     Maybe.fromNullable(persons[0])
       .chain(safeProp('age'))
-      .getOrElse(42)
+      .getOrElse(42),
   ).toBe(42)
 
   expect(
     Maybe.fromNullable(persons[1])
       .chain(safeProp('age'))
-      .getOrElse(42)
+      .getOrElse(42),
   ).toBe(30)
 
   expect(
     Maybe.fromNullable(persons[3])
       .chain(safeProp('age'))
-      .getOrElse(42)
+      .getOrElse(42),
   ).toBe(42)
 })
 
@@ -113,10 +113,10 @@ test('filter', () => {
       .filter(
         compose(
           isEven,
-          length
-        )
+          length,
+        ),
       )
-      .getOrElse('A man has no even length name')
+      .getOrElse('A man has no even length name'),
   ).toBe('Carl')
 
   expect(
@@ -125,10 +125,10 @@ test('filter', () => {
       .filter(
         compose(
           isEven,
-          length
-        )
+          length,
+        ),
       )
-      .getOrElse('A girl has no even length name')
+      .getOrElse('A girl has no even length name'),
   ).toBe('A girl has no even length name')
 
   expect(
@@ -137,28 +137,28 @@ test('filter', () => {
       .filter(
         compose(
           isEven,
-          length
-        )
+          length,
+        ),
       )
-      .getOrElse('A person does not exist')
+      .getOrElse('A person does not exist'),
   ).toBe('A person does not exist')
 
   expect(
     Maybe.fromNullable(persons[2])
       .filter(isAdmin)
-      .fold(unsafeProp('password'), () => 'A person is not an admin')
+      .fold(unsafeProp('password'), () => 'A person is not an admin'),
   ).toBe('1234')
 
   expect(
     Maybe.fromNullable(persons[1])
       .filter(isAdmin)
-      .fold(unsafeProp('password'), () => 'A person is not an admin')
+      .fold(unsafeProp('password'), () => 'A person is not an admin'),
   ).toBe('A person is not an admin')
 
   expect(
     Maybe.fromNullable(persons[3])
       .filter(isAdmin)
-      .fold(unsafeProp('password'), () => 'A person does not exist')
+      .fold(unsafeProp('password'), () => 'A person does not exist'),
   ).toBe('A person does not exist')
 })
 
@@ -166,15 +166,15 @@ test('fold', () => {
   expect(
     Maybe.fromNullable(persons[0]).fold(
       unsafeProp('name'),
-      () => 'A girl has no name'
-    )
+      () => 'A girl has no name',
+    ),
   ).toBe('Alice')
 
   expect(
     Maybe.fromNullable(persons[3]).fold(
       unsafeProp('name'),
-      () => 'A person does not exist'
-    )
+      () => 'A person does not exist',
+    ),
   ).toBe('A person does not exist')
 })
 
@@ -194,14 +194,14 @@ test('map', () => {
     Maybe.fromNullable(persons[0])
       .chain(safeProp('name'))
       .map(toUpper)
-      .getOrElse('A girl has no name')
+      .getOrElse('A girl has no name'),
   ).toBe('ALICE')
 
   expect(
     Maybe.fromNullable(persons[3])
       .chain(safeProp('name'))
       .map(toUpper)
-      .getOrElse('A person does not exist')
+      .getOrElse('A person does not exist'),
   ).toBe('A person does not exist')
 })
 
@@ -216,14 +216,14 @@ test('orElse', () => {
     Maybe.fromNullable(persons[1])
       .filter(isAdmin)
       .orElse(Maybe.of({ name: 'Spontaneous Admin', password: 'password' }))
-      .fold(unsafeProp('name'), () => 'Should not happen')
+      .fold(unsafeProp('name'), () => 'Should not happen'),
   ).toBe('Spontaneous Admin')
 
   expect(
     Maybe.fromNullable(persons[2])
       .filter(isAdmin)
       .orElse(Maybe.of({ name: 'Spontaneous Admin', password: 'password' }))
-      .fold(unsafeProp('name'), () => 'Should not happen')
+      .fold(unsafeProp('name'), () => 'Should not happen'),
   ).toBe('Carl')
 })
 
