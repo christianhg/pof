@@ -22,7 +22,6 @@
     "lint": "tslint --fix ./src/**/*.ts",
     "lint-production": "tslint ./src/**/*.ts",
     "prepare": "npm run dist",
-    "prepush": "npm run lint-production && npm run prettier-production && npm run test",
     "prettier": "prettier --config ./.prettierrc --write ./src/**/*.ts",
     "prettier-production": "prettier --config ./.prettierrc --list-different ./src/**/*.ts",
     "remove-coverage": "trash coverage",
