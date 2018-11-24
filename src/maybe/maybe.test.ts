@@ -110,21 +110,36 @@ test('filter', () => {
   expect(
     Maybe.fromNullable(persons[2])
       .chain(safeProp('name'))
-      .filter(compose(isEven, length))
+      .filter(
+        compose(
+          isEven,
+          length
+        )
+      )
       .getOrElse('A man has no even length name')
   ).toBe('Carl')
 
   expect(
     Maybe.fromNullable(persons[0])
       .chain(safeProp('name'))
-      .filter(compose(isEven, length))
+      .filter(
+        compose(
+          isEven,
+          length
+        )
+      )
       .getOrElse('A girl has no even length name')
   ).toBe('A girl has no even length name')
 
   expect(
     Maybe.fromNullable(persons[3])
       .chain(safeProp('name'))
-      .filter(compose(isEven, length))
+      .filter(
+        compose(
+          isEven,
+          length
+        )
+      )
       .getOrElse('A person does not exist')
   ).toBe('A person does not exist')
 
